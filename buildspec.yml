@@ -7,17 +7,22 @@ environment_variables:
 phases:
   install:
     commands:
-      - echo Nothing to do in the install phase...
+      - echo Install started on `date`
+      - curl https://glide.sh/get | sh
+      - glide install
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
   build:
     commands:
       - echo Build started on `date`
-      - go build $(go list ./...|grep -v vendor)
+      - go build codebuild.go
   post_build:
     commands:
       - echo Build completed on `date`
+      - echo Test started on `date`
+      - go test *.go
+      - echo Test finished on `date`
 artifacts:
   type: zip
   files:
